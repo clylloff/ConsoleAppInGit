@@ -8,15 +8,28 @@ namespace ConsoleAppInGit
 {
     internal class Calculate
     {
-        private object doCalculation(object obj)
+        public event EventHandler? HalfDone;
+        public int doCalculation(int id)
         {
-            var endTime = DateTime.Now.AddSeconds(5);
+            Console.WriteLine($"DoCalculation {id} started on Thread {Thread.CurrentThread.ManagedThreadId}");
 
-            while (DateTime.Now < endTime)
+            int noOfChecks =0;
+            //4 sec of dummy work
+            var endTime1 = DateTime.Now.AddSeconds(2);
+            while (DateTime.Now < endTime1)
             {
+                noOfChecks++;
             }
- 
-            return obj;
+
+            HalfDone?.Invoke(this, new EventArgs());
+
+            var endTime2 = DateTime.Now.AddSeconds(2);
+            while (DateTime.Now < endTime2)
+            {
+                noOfChecks++;
+            }
+            Console.WriteLine($"DoCalculation {id} Ended on Thread {Thread.CurrentThread.ManagedThreadId}");
+            return noOfChecks;
         }
     }
 }
